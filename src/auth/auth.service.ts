@@ -79,12 +79,12 @@ export class AuthService {
     return this.prisma.user.delete({ where: { id: userId } });
   }
 
-  async updateUser(token: string, name: string, email: string) {
+  async updateUser(token: string, name: string, email?: string) {
     return this.prisma.user.update({
       where: { id: (await this.getUserFromToken(token)).id },
       data: {
-        name,
-        email,
+        name: name,
+        email: email,
       },
     });
   }
@@ -122,8 +122,6 @@ export class AuthService {
       return this.prisma.user.update({
         where: { id: userId },
         data: {
-          name: name,
-          email: email,
           password: hashedPassword,
         },
       });
