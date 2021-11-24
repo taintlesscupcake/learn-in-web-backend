@@ -15,15 +15,24 @@ export class RunnerService {
     // fs.writeFileSync('tmp.' + this.type, code);
   }
   async run(body: any) {
+    fs.mkdir(
+      '' + (await this.auth.getUserFromToken(body.token)).name,
+      { recursive: true },
+      (err) => {
+        if (err) {
+          console.log(err);
+        }
+      },
+    );
     const location: string =
-      '/' +
+      './' +
       (await this.auth.getUserFromToken(body.token)).name +
       '/tmp.' +
       body.type;
     fs.writeFileSync(location, body.code);
     switch (body.type) {
       case 'c': {
-        this.c(body, location);
+        return { output: this.c(body, location) };
       }
       case 'cpp': {
         this.cpp(body, location);
@@ -41,21 +50,17 @@ export class RunnerService {
   }
   c(body: any, location: string) {
     const output: Array<string> = [];
-    if (body.input == []) {
+    if (body.input == '' || body.input == undefined) {
       const test = child_process.spawnSync('gcc', [location, '-o', 'tmp'], {
         encoding: 'utf8',
         shell: true,
       });
-      console.log(test.stderr);
-      const result = child_process.spawnSync(
-        '.' + location.slice(0, location.length - 2),
-        {
-          encoding: 'utf8',
-          shell: true,
-        },
-      );
-      console.log(result.stdout);
+      const result = child_process.spawnSync('./tmp', {
+        encoding: 'utf8',
+        shell: true,
+      });
       output.push(result.stdout as string);
+      return output;
     }
     for (const ip of body.input) {
       const test = child_process.spawnSync('gcc', [location, '-o', 'tmp'], {

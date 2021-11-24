@@ -22,6 +22,6 @@ export class AuthController {
 
   @Post('validate')
   validate(@Body() body) {
-    return this.AuthService.validateUser(body.token);
+    return this.AuthService.getUserFromToken(body.token);
   }
 }

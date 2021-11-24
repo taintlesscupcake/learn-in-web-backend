@@ -18,6 +18,8 @@ model User {
   role     Role   @default(USER)
 
   posts    Post[]
+  postlikes PostLike[]
+  commentlikes CommentLike[]
   comments Comment[]
 }
 
@@ -31,6 +33,7 @@ model Post {
   level     Level    @default(MEDIUM)
   content   String
 
+  postlikes PostLike[]
   comments Comment[]
 }
 
@@ -42,6 +45,24 @@ model Comment {
   authorId  String   @db.Uuid
   post      Post     @relation(fields: [postId], references: [id])
   postId    String   @db.Uuid
+
+  commentlikes CommentLike[]
+}
+
+model PostLike {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+}
+
+model CommentLike {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
 }
 
 enum Level {

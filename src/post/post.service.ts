@@ -34,6 +34,11 @@ export class PostService {
   async getPosts(take: number) {
     const posts = await this.prisma.post.findMany({
       take: take,
+      orderBy: {
+        postlikes: {
+          _count: 'desc',
+        },
+      },
     });
     return posts;
   }
@@ -87,5 +92,75 @@ export class PostService {
       },
     });
     return post;
+  }
+
+  async likePost(token: string, id: string) {
+    const user = await this.auth.validateUser(token);
+    if (
+      await this.prisma.postLike.count({
+        where: {
+          postId: id,
+          userId: user.id,
+        },
+      })
+    ) {
+      return {
+        message: 'You already liked this post',
+      };
+    }
+    const post = await this.prisma.postLike.create({
+      data: {
+        post: {
+          connect: {
+            id: id,
+          },
+        },
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
+    return post;
+  }
+
+  async commentPost(token: string, id: string, content: string) {
+    const user = await this.auth.validateUser(token);
+    const post = await this.prisma.comment.create({
+      data: {
+        post: {
+          connect: {
+            id: id,
+          },
+        },
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
+        content: content,
+      },
+    });
+    return post;
+  }
+
+  async deleteComment(token: string, id: string) {
+    const user = await this.auth.validateUser(token);
+    const comment = await this.prisma.comment.delete({
+      where: {
+        id: id,
+      },
+    });
+    return comment;
+  }
+
+  async getComments(id: string) {
+    const comments = await this.prisma.comment.findMany({
+      where: {
+        postId: id,
+      },
+    });
+    return comments;
   }
 }
