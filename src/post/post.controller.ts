@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PostService } from './post.service';
 @Controller('post')
 export class PostController {
@@ -10,8 +10,31 @@ export class PostController {
       body.token,
       body.title,
       body.privat,
-      body.content,
+      body.explain,
+      body.example,
+      body.testinput,
+      body.testoutput,
     );
+  }
+
+  @Get('')
+  getAll() {
+    return this.postService.getAll();
+  }
+
+  @Get('/some')
+  getSome(@Body() body) {
+    return this.postService.getPosts(body.take);
+  }
+
+  @Get('/id/:id')
+  getPost(@Param('id') id) {
+    return this.postService.getPost(id);
+  }
+
+  @Get('/difficulty/:id')
+  getDifficulty(@Param('id') id) {
+    return this.postService.getPostbyLevel(id);
   }
 
   @Delete('')

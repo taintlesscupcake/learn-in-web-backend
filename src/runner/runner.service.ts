@@ -38,7 +38,7 @@ export class RunnerService {
         this.cpp(body, location);
       }
       case 'js': {
-        this.js(body, location);
+        return { output: this.js(body, location) };
       }
       case 'go': {
         this.go(body, location);
@@ -129,6 +129,7 @@ export class RunnerService {
       });
       console.log(result.stdout);
       output.push(result.stdout as string);
+      return output;
     }
     for (const ip of body.input) {
       const result = child_process.spawnSync('node', [location], {

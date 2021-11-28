@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { AuthService } from 'src/auth/auth.service';
+import { Level } from '.prisma/client';
 
 @Injectable()
 export class PostService {
@@ -13,9 +14,16 @@ export class PostService {
     token: string,
     title: string,
     privat: boolean,
-    content: string,
+    explain: string,
+    example: string,
+    testinput: string[],
+    testoutput: string[],
   ) {
-    const user = await this.auth.validateUser(token);
+    const user = await this.auth.validateUser(
+      (
+        await this.auth.getUserFromToken(token)
+      ).id,
+    );
     const post = await this.prisma.post.create({
       data: {
         author: {
@@ -25,10 +33,18 @@ export class PostService {
         },
         title: title,
         private: privat,
-        content: content,
+        explain: explain,
+        example: example,
+        testinput: testinput,
+        testoutput: testoutput,
       },
     });
     return post;
+  }
+
+  async getAll() {
+    const posts = await this.prisma.post.findMany();
+    return posts;
   }
 
   async getPosts(take: number) {
@@ -54,21 +70,23 @@ export class PostService {
     return posts;
   }
 
-  async getPost(id: string) {
+  async getPost(id: number) {
+    const num = +id;
     const post = await this.prisma.post.findUnique({
-      where: {
-        id: id,
-      },
+      where: { id: num },
     });
     return post;
   }
 
   async updatePost(
     token: string,
-    id: string,
+    id: number,
     title: string,
     privat: boolean,
-    content: string,
+    explain: string,
+    example: string,
+    testinput: string[],
+    testoutput: string[],
   ) {
     const user = await this.auth.validateUser(token);
     const post = await this.prisma.post.update({
@@ -78,13 +96,16 @@ export class PostService {
       data: {
         title: title,
         private: privat,
-        content: content,
+        explain: explain,
+        example: example,
+        testinput: testinput,
+        testoutput: testoutput,
       },
     });
     return post;
   }
 
-  async deletePost(token: string, id: string) {
+  async deletePost(token: string, id: number) {
     const user = await this.auth.validateUser(token);
     const post = await this.prisma.post.delete({
       where: {
@@ -94,7 +115,7 @@ export class PostService {
     return post;
   }
 
-  async likePost(token: string, id: string) {
+  async likePost(token: string, id: number) {
     const user = await this.auth.validateUser(token);
     if (
       await this.prisma.postLike.count({
@@ -125,7 +146,7 @@ export class PostService {
     return post;
   }
 
-  async commentPost(token: string, id: string, content: string) {
+  async commentPost(token: string, id: number, content: string) {
     const user = await this.auth.validateUser(token);
     const post = await this.prisma.comment.create({
       data: {
@@ -155,12 +176,30 @@ export class PostService {
     return comment;
   }
 
-  async getComments(id: string) {
+  async getComments(id: number) {
     const comments = await this.prisma.comment.findMany({
       where: {
         postId: id,
       },
     });
     return comments;
+  }
+
+  async getPostbyLevel(difficulty: number) {
+    let level: Level;
+    if (difficulty == 1) {
+      level = 'LOW';
+    } else if (difficulty == 2) {
+      level = 'MEDIUM';
+    } else {
+      level = 'HIGH';
+    }
+    console.log(difficulty);
+    const posts = await this.prisma.post.findMany({
+      where: {
+        level: level,
+      },
+    });
+    return posts;
   }
 }

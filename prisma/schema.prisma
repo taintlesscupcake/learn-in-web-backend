@@ -11,58 +11,61 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
+  id       String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email    String @unique
   name     String
   password String
   role     Role   @default(USER)
 
-  posts    Post[]
-  postlikes PostLike[]
+  posts        Post[]
+  postlikes    PostLike[]
   commentlikes CommentLike[]
-  comments Comment[]
+  comments     Comment[]
 }
 
 model Post {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
-  title     String 
-  createdAt DateTime @default(now())
-  private   Boolean  @default(true)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @db.Uuid
-  level     Level    @default(MEDIUM)
-  content   String
+  id         Int   @id @unique @default(autoincrement())
+  title      String
+  createdAt  DateTime @default(now())
+  private    Boolean  @default(false)
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   String   @db.Uuid
+  level      Level    @default(MEDIUM)
+  explain    String
+  example    String
+  testinput  String[]
+  testoutput String[]
 
   postlikes PostLike[]
-  comments Comment[]
+  comments  Comment[]
 }
 
 model Comment {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
+  id        String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   content   String
   createdAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String   @db.Uuid
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.Uuid
+  postId    Int
 
   commentlikes CommentLike[]
 }
 
 model PostLike {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.Uuid
+  id     String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  post   Post   @relation(fields: [postId], references: [id])
+  postId    Int
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
 }
 
 model CommentLike {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
-  comment   Comment  @relation(fields: [commentId], references: [id])
-  commentId String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.Uuid
+  id        String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  comment   Comment @relation(fields: [commentId], references: [id])
+  commentId String  @db.Uuid
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @db.Uuid
 }
 
 enum Level {
