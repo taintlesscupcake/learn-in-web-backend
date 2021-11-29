@@ -194,7 +194,6 @@ export class PostService {
     } else {
       level = 'HIGH';
     }
-    console.log(difficulty);
     const posts = await this.prisma.post.findMany({
       where: {
         level: level,
