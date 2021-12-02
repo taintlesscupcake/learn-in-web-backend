@@ -18,12 +18,21 @@ export class PostService {
     example: string,
     testinput: string[],
     testoutput: string[],
+    difficulty: number,
   ) {
     const user = await this.auth.validateUser(
       (
         await this.auth.getUserFromToken(token)
       ).id,
     );
+    let level: Level;
+    if (difficulty == 1) {
+      level = 'LOW';
+    } else if (difficulty == 2) {
+      level = 'MEDIUM';
+    } else {
+      level = 'HIGH';
+    }
     const post = await this.prisma.post.create({
       data: {
         author: {
@@ -37,6 +46,7 @@ export class PostService {
         example: example,
         testinput: testinput,
         testoutput: testoutput,
+        level: level,
       },
     });
     return post;

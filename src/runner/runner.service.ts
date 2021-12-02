@@ -85,7 +85,7 @@ export class RunnerService {
   cpp(body: any, location: string) {
     const output: Array<string> = [];
     if (body.input == []) {
-      const test = child_process.spawnSync('gcc', [location, '-o', 'tmp'], {
+      const test = child_process.spawnSync('g++', [location, '-o', 'tmp'], {
         encoding: 'utf8',
         shell: true,
       });
@@ -101,7 +101,7 @@ export class RunnerService {
       output.push(result.stdout as string);
     }
     for (const ip of body.input) {
-      const test = child_process.spawnSync('gcc', [location, '-o', 'tmp'], {
+      const test = child_process.spawnSync('g++', [location, '-o', 'tmp'], {
         encoding: 'utf8',
         shell: true,
       });
@@ -176,7 +176,7 @@ export class RunnerService {
       output.push(result.stdout as string);
     }
     for (const ip of body.input) {
-      const result = child_process.spawnSync('go', ['run', location], {
+      const result = child_process.spawnSync('ts-node', ['run', location], {
         encoding: 'utf8',
         shell: true,
         input: ip,
