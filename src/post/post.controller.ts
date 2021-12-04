@@ -73,7 +73,7 @@ export class PostController {
 
   @Post('/comment/:id')
   createComment(@Body() body, @Param('id') id) {
-    return this.postService.commentPost(body.token, id, body.comment);
+    return this.postService.commentPost(body.token, id, body.content);
   }
 
   @Delete('/comment/:id')

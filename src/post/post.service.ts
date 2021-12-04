@@ -188,11 +188,12 @@ export class PostService {
   }
 
   async likePost(token: string, id: number) {
+    const num = +id;
     const user = await this.auth.getUserFromToken(token);
     if (
       await this.prisma.postLike.count({
         where: {
-          postId: id,
+          postId: num,
           userId: user.id,
         },
       })
@@ -219,12 +220,13 @@ export class PostService {
   }
 
   async commentPost(token: string, id: number, content: string) {
+    const num = +id;
     const user = await this.auth.getUserFromToken(token);
     const post = await this.prisma.comment.create({
       data: {
         post: {
           connect: {
-            id: id,
+            id: num,
           },
         },
         author: {
