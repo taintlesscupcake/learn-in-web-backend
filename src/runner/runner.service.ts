@@ -146,7 +146,7 @@ export class RunnerService {
   go(body: any, location: string) {
     const output: Array<string> = [];
     if (body.input == []) {
-      const result = child_process.spawnSync('go', [location], {
+      const result = child_process.spawnSync('go', ['run', location], {
         encoding: 'utf8',
         shell: true,
       });
@@ -154,7 +154,7 @@ export class RunnerService {
       output.push(result.stdout as string);
     }
     for (const ip of body.input) {
-      const result = child_process.spawnSync('go', [location], {
+      const result = child_process.spawnSync('go', ['run', location], {
         encoding: 'utf8',
         shell: true,
         input: ip,
@@ -168,7 +168,7 @@ export class RunnerService {
   ts(body: any, location: string) {
     const output: Array<string> = [];
     if (body.input == []) {
-      const result = child_process.spawnSync('ts-node', ['run', location], {
+      const result = child_process.spawnSync('ts-node', [location], {
         encoding: 'utf8',
         shell: true,
       });
@@ -176,7 +176,7 @@ export class RunnerService {
       output.push(result.stdout as string);
     }
     for (const ip of body.input) {
-      const result = child_process.spawnSync('ts-node', ['run', location], {
+      const result = child_process.spawnSync('ts-node', [location], {
         encoding: 'utf8',
         shell: true,
         input: ip,
