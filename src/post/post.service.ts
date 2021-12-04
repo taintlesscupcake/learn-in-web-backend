@@ -104,7 +104,7 @@ export class PostService {
     });
     const likes = await this.prisma.postLike.count({
       where: {
-        postId: id,
+        postId: num,
       },
     });
     const returndata = {
