@@ -114,15 +114,6 @@ export class PostService {
     return returndata;
   }
 
-  async getPostLike(id: number) {
-    const likes = await this.prisma.postLike.count({
-      where: {
-        postId: id,
-      },
-    });
-    return likes;
-  }
-
   async getPostbyLevel(difficulty: number) {
     let level: Level;
     if (difficulty == 1) {
@@ -197,16 +188,13 @@ export class PostService {
           userId: user.id,
         },
       })
-    ) {
-      return {
-        message: 'You already liked this post',
-      };
-    }
+    )
+      return this.getPost(id);
     const post = await this.prisma.postLike.create({
       data: {
         post: {
           connect: {
-            id: id,
+            id: num,
           },
         },
         user: {
@@ -216,7 +204,7 @@ export class PostService {
         },
       },
     });
-    return await this.getPostLike(id);
+    return this.getPost(id);
   }
 
   async commentPost(token: string, id: number, content: string) {
