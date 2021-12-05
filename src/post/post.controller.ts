@@ -22,7 +22,7 @@ export class PostController {
       body.example,
       body.testinput,
       body.testoutput,
-      body.level,
+      body.difficulty,
     );
   }
 
@@ -37,7 +37,7 @@ export class PostController {
       body.example,
       body.testinput,
       body.testoutput,
-      body.level,
+      body.difficulty,
     );
   }
 

@@ -46,6 +46,9 @@ export class RunnerService {
       case 'ts': {
         this.ts(body, location);
       }
+      case 'py': {
+        this.py(body, location);
+      }
     }
   }
   c(body: any, location: string) {
@@ -90,13 +93,10 @@ export class RunnerService {
         shell: true,
       });
       console.log(test.stderr);
-      const result = child_process.spawnSync(
-        '.' + location.slice(0, location.length - 4),
-        {
-          encoding: 'utf8',
-          shell: true,
-        },
-      );
+      const result = child_process.spawnSync('./tmp', {
+        encoding: 'utf8',
+        shell: true,
+      });
       console.log(result.stdout);
       output.push(result.stdout as string);
     }
@@ -177,6 +177,28 @@ export class RunnerService {
     }
     for (const ip of body.input) {
       const result = child_process.spawnSync('ts-node', [location], {
+        encoding: 'utf8',
+        shell: true,
+        input: ip,
+      });
+      console.log(result.stdout);
+      output.push(result.stdout as string);
+    }
+    return output;
+  }
+
+  py(body: any, location: string) {
+    const output: Array<string> = [];
+    if (body.input == []) {
+      const result = child_process.spawnSync('python3', [location], {
+        encoding: 'utf8',
+        shell: true,
+      });
+      console.log(result.stdout);
+      output.push(result.stdout as string);
+    }
+    for (const ip of body.input) {
+      const result = child_process.spawnSync('python3', [location], {
         encoding: 'utf8',
         shell: true,
         input: ip,
