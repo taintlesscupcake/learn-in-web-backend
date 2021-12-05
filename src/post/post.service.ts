@@ -258,4 +258,34 @@ export class PostService {
     });
     return comments;
   }
+  async searchPost(search: string) {
+    const query: string = search.split(' ').join(' | ');
+    const posts = await this.prisma.post.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              search: query,
+            },
+          },
+          {
+            explain: {
+              search: query,
+            },
+          },
+          {
+            example: {
+              search: query,
+            },
+          },
+        ],
+      },
+      orderBy: {
+        postlikes: {
+          _count: 'desc',
+        },
+      },
+    });
+    return posts;
+  }
 }

@@ -85,4 +85,9 @@ export class PostController {
   getComments(@Param('id') id) {
     return this.postService.getComments(id);
   }
+
+  @Post('search')
+  search(@Body() body) {
+    return this.postService.searchPost(body.search);
+  }
 }
