@@ -70,7 +70,7 @@ export class PostService {
   }
 
   async getPostsByUser(token: string, userId: string, take: number) {
-    const user = await this.auth.getUserFromToken(token);
+    await this.auth.getUserFromToken(token);
     const posts = await this.prisma.post.findMany({
       where: {
         authorId: userId,
@@ -142,7 +142,7 @@ export class PostService {
     testoutput: string[],
     difficulty: number,
   ) {
-    const user = await this.auth.getUserFromToken(token);
+    await this.auth.getUserFromToken(token);
     let level: Level;
     if (difficulty == 1) {
       level = 'LOW';
@@ -169,7 +169,7 @@ export class PostService {
   }
 
   async deletePost(token: string, id: number) {
-    const user = await this.auth.getUserFromToken(token);
+    await this.auth.getUserFromToken(token);
     const post = await this.prisma.post.delete({
       where: {
         id: id,
@@ -190,7 +190,7 @@ export class PostService {
       })
     )
       return this.getPost(id);
-    const post = await this.prisma.postLike.create({
+    await this.prisma.postLike.create({
       data: {
         post: {
           connect: {
@@ -229,7 +229,7 @@ export class PostService {
   }
 
   async deleteComment(token: string, id: string) {
-    const user = await this.auth.getUserFromToken(token);
+    await this.auth.getUserFromToken(token);
     const comment = await this.prisma.comment.delete({
       where: {
         id: id,

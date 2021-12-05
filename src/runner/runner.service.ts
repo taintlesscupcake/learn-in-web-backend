@@ -1,4 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as child_process from 'child_process';
 import { AuthService } from 'src/auth/auth.service';
 import * as fs from 'fs';
@@ -54,7 +54,7 @@ export class RunnerService {
   c(body: any, location: string) {
     const output: Array<string> = [];
     if (body.input == '' || body.input == undefined) {
-      const test = child_process.spawnSync('gcc', [location, '-o', 'tmp'], {
+      child_process.spawnSync('gcc', [location, '-o', 'tmp'], {
         encoding: 'utf8',
         shell: true,
       });
