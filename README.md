@@ -17,23 +17,16 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
 
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="http://khuhub.khu.ac.kr/2021105619/learn-in-web-backend">
+    <img src="logo.svg" alt="Logo" width="80" height="80">
   </a>
 <h3 align="center">Learn In Web(Backend)</h3>
+
 
   <p align="center">
     NestJS Backend for
@@ -74,7 +67,6 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -83,7 +75,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://code.sungjin.dev)
 
 This project allows users to run codes and study without any IDE. This project focusd on schools, and students for study.
 
@@ -121,7 +113,7 @@ This is an example of how to list things you need to use the software and how to
   ```
 
 * Compiler for languages
-    
+  
   ```sh
     #For typescript
     npm install -g ts-node
@@ -131,10 +123,10 @@ This is an example of how to list things you need to use the software and how to
     sudo yum update && sudo yum install golang build-essential
     #Other
     #install golang, cpp, c++ manually.
-    ```
-    
+  ```
+  
 * Docker, postgreSQL Database
-    
+  
   (You can manually change port, name, etc if you want.)
 
     ```sh
@@ -142,9 +134,9 @@ This is an example of how to list things you need to use the software and how to
     docker pull postgres
     docker run -d -p 5432:5432 --name postgres-container -e POSTGRES_PASSWORD=Your_Password -v ~/pgdata:/Location_to_save_data/ postgres 
     ```
+  
     
-    
-    
+  
 * Installation
 
 1. Clone the repo
@@ -159,7 +151,7 @@ This is an example of how to list things you need to use the software and how to
 
 3. Enter your DB URL in `.env`
    ```js
-   DATABASE_URL="postgresql://_User:_Password@localhost:5432/postgres""
+   DATABASE_URL="postgresql://_User:_Password@localhost:5432/postgres"
    ```
 
 4. Migrate DB
@@ -186,7 +178,139 @@ This is an example of how to list things you need to use the software and how to
 
 To Use Learn In Web, you need to use this backend; this project communicate via RESTful API.
 
-_For More Useage, please see frontend [Demo](http://khuhub.khu.ac.kr/2021105619/learn_in_web)_
+-API-
+
+```json
+POST /auth/signup
+{
+  "name" : "name",
+  "email" : "email",
+  "password" : "password"
+}
+```
+
+```json
+POST /auth/signin
+{
+  "email" : "email",
+  "password" : "password"
+}
+```
+
+```json
+POST /auth/refresh
+{
+  "token" : "token_madeby_signup_or_signin"
+}
+```
+
+```json
+POST /auth/validate
+{
+  "token" : "token_madeby_signup_or_signin"
+}
+```
+
+```json
+POST /post
+{
+  "token" : "token",
+  "title" : "title",
+  "privat" : true,
+  "explain" : "explain of problem",
+  "testinput" : ["1", "2"],
+  "testoutput" : ["3", "4"],
+  "difficulty" : 1
+}
+```
+
+```json
+PUT /post
+{
+  "token" : "token",
+  "title" : "title",
+  "privat" : true,
+  "explain" : "explain of problem",
+  "testinput" : ["1", "2"],
+  "testoutput" : ["3", "4"],
+  "difficulty" : 1
+}
+```
+
+```json
+GET /post
+```
+
+```json
+
+GET /post/some
+{
+  "take" : 20
+}
+```
+
+```
+GET /post/id/:id
+use integer param for :id
+```
+
+```
+GET /post/difficulty/:level
+use integer param for :level
+```
+
+```json
+POST /post/like/:id
+use integer param for :id
+{
+ 	"token" : "token"
+}
+```
+
+```json
+DELETE /post
+```
+
+```json
+POST /comment/:id
+use integer param for :id
+{
+  "token" : "token",
+  "content" : "content of comment"
+}
+```
+
+```json
+DELETE /comment/:id
+use integer param for :id
+{
+  "token" : "token"
+}
+```
+
+```json
+GET /comment/:id
+use integer param for :id
+```
+
+```json
+POST /search
+{
+  "search" : "search item divided by black" 
+}
+```
+
+```json
+POST /runner
+{
+  "token" : "token",
+  "input" : ["input", "data", "array", "does not working now"],
+  "type" : "cpp",
+  "code" : "//example code\n#include <iostream> ~~~~"
+}
+```
+
+_For Real  Useage, please see frontend [Frontend_URL](http://khuhub.khu.ac.kr/2021105619/learn_in_web)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -232,7 +356,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -241,37 +365,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@taintlesscupcake](https://instagram.com/taintless_cupcake) - [email](mailto:me@sungjin.dev)
+SungJin - [@taintlesscupcake](https://instagram.com/taintless_cupcake) - [email](mailto:me@sungjin.dev)
 
 Project Link: [http://khuhub.khu.ac.kr/2021105619/learn-in-web-backend](http://khuhub.khu.ac.kr/2021105619/learn-in-web-backend)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: screenshot.png
