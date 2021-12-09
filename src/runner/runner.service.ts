@@ -35,19 +35,19 @@ export class RunnerService {
         return { output: this.c(body, location) };
       }
       case 'cpp': {
-        this.cpp(body, location);
+        return { output: this.cpp(body, location) };
       }
       case 'js': {
         return { output: this.js(body, location) };
       }
       case 'go': {
-        this.go(body, location);
+        return { output: this.go(body, location) };
       }
       case 'ts': {
-        this.ts(body, location);
+        return { output: this.ts(body, location) };
       }
       case 'py': {
-        this.py(body, location);
+        return { output: this.py(body, location) };
       }
     }
   }
@@ -87,7 +87,7 @@ export class RunnerService {
 
   cpp(body: any, location: string) {
     const output: Array<string> = [];
-    if (body.input == []) {
+    if (body.input == '' || body.input == undefined) {
       const test = child_process.spawnSync('g++', [location, '-o', 'tmp'], {
         encoding: 'utf8',
         shell: true,
